@@ -124,9 +124,9 @@ int main()
 	sf::Clock clk;
 	clk.restart(); // start the timer
 
-    sf::CircleShape shape(100.f);
-    shape.setPosition(20,20);
-    shape.setOrigin(sf::Vector2f(20.f, 20.f));
+    sf::CircleShape shape(120.f);
+    shape.setPosition(60,cy-60);
+    shape.setOrigin(sf::Vector2f(60.f, 60.f));
     shape.setFillColor(sf::Color::Blue);
 
     while (window.isOpen())

@@ -43,6 +43,13 @@ int main()
         exit(0);
     }
 
+	sf::Shader colorslide_shader;
+    if (!colorslide_shader.loadFromFile("shaders/colorslide.glsl", sf::Shader::Fragment))
+    {
+        printf("Unable to load shader - colorslide.\n");
+        exit(0);
+    }
+
 
     sf::Shader color_shader;
     if (!color_shader.loadFromFile("shaders/default.vert", "shaders/color.frag"))
@@ -63,13 +70,6 @@ int main()
     if (!glow_shader.loadFromFile("shaders/default.vert", "shaders/glow.frag"))
     {
         printf("Unable to load shader - glow.\n");
-        exit(0);
-    }
-
-    sf::Shader blur_shader;
-    if (!blur_shader.loadFromFile("shaders/default.vert", "shaders/blur.frag"))
-    {
-        printf("Unable to load shader - blur.\n");
         exit(0);
     }
 

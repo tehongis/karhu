@@ -8,6 +8,55 @@
 #include <math.h>
 
 
+// float num1 = -gravity * ( 2 * mass1 + mass2) * sin(angle1);
+// float num2 = -mass2 * gravity * sin(angle1-2*angle2);
+// float num3 = -2 * sin(angle1 - angle2) * mass2;
+// float num4 = (velocity2*velocity2)*length2+(velocity1*velocity1)*lenght1*cos(angle1-angle2);
+// float den = lenght1 * (2*mass1+mass2-mass2*cos(2*angle1-2*angle2))
+// acceleration1 = (num1+num2+num3*num4) / den;
+
+// float num1 = 2 * sin(angle1-angle2);
+// float num2 = ((velocity1*velocity1)*lenght1*(mass1+mass2));
+// float num3 = gravity * (mass1 + mass2) * cos(angle1);
+// float num4 = (velocity2 * velocity2) * lenght2 * mass2 *cos(angle1-angle2);
+// float den = lenght2 * (2*mass1+mass2-mass2*cos(2*angle1-2*angle2))
+// acceleration1 = num1*(num2+num3+num4) / den;
+
+// https://youtu.be/uWzPe_S-RVE?t=1065
+
+class pendulum {
+
+    float length;
+    float angle;
+    float mass;
+    float velocity;
+    float acceleration;
+
+    public:
+        pendulum (float l, float a, float m) {
+            length = l;
+            angle = a;
+            mass = m;
+        }
+    
+        float getEndX() {
+            float end_x = length * sin(angle);
+            return (end_x);
+        }
+
+        float getEndY() {
+            float end_y = length * cos(angle); 
+            return (end_y);
+        }
+
+        void update() {
+
+
+        }
+
+
+};
+
 int main()
 {
     float count1 = 0.0f;
@@ -15,7 +64,12 @@ int main()
     float temp1;
     float temp2;    
 
+    pendulum pend1(20.0f,45.0f,10.0f);
+
     float stickAxis[8] = {0};
+
+    sf::Joystick::Identification jId;
+    std::string stickname;
 
     const float dist = 300.0f;
     const int nr_sprites = 64;
@@ -113,7 +167,6 @@ int main()
 	sf::Sprite bg_spr(bg_tex);
 
 
-
 	// Set the resolution parameter (the resoltion is divided to make the fire smaller)
 	bg_shader.setParameter("resolution", sf::Vector2f(window.getSize().x, window.getSize().y));
 
@@ -138,8 +191,13 @@ int main()
             switch (event.type)
             {
             case sf::Event::JoystickConnected:
-                printf("Joystick connected. ID: %d\n", event.joystickConnect.joystickId);
+                {
+                int stickid = event.joystickConnect.joystickId;
+                jId = sf::Joystick::getIdentification(stickid);
+                stickname = jId.name;
+                printf("%s connected. ID: %d\n", stickname,stickid);
                 break;
+                }
             case sf::Event::JoystickDisconnected:
                 printf("Joystick disconnected.\n");
                 break;
@@ -194,6 +252,16 @@ int main()
             window.draw(sprite,&transparent_shader);
 
         }
+
+        int lx = cx + int(30 * pend1.getEndX());
+        int ly = cy + int(30 * pend1.getEndY());
+
+        sf::Vertex pline[] =
+        {
+            sf::Vertex(sf::Vector2f(cx, cy)),
+            sf::Vertex(sf::Vector2f(lx, ly))
+        };
+        window.draw(pline, 2, sf::Lines);
 
         sf::Vertex line[] =
         {
